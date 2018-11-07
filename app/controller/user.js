@@ -70,6 +70,15 @@ class UserController extends Controller {
     const req = { ...query, ...request.body }
     this.ctx.body = await service.user.modifyUserInfo(req)
   }
+
+  /**
+   * @description 上传头像。请求参数：avatar
+   */
+  async modifyUserInfo() {
+    const { query, request, service } = this.ctx
+    const req = { ...query, ...request.body }
+    this.ctx.body = await service.user.modifyUserInfo(req)
+  }
 }
 
 module.exports = UserController
