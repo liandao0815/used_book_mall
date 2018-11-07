@@ -16,7 +16,7 @@ module.exports = (options, app) => async (ctx, next) => {
 
     if (!userInfo) {
       ctx.status = 401
-      ctx.body = ctx.helper.response.error('token不存在，请登录后再试')
+      ctx.body = ctx.helper.response.error('登录状态失效，请登录后再试')
       return
     }
 

@@ -5,7 +5,7 @@ module.exports = {
   // 响应主体
   response: {
     success: data => ({ code: 0, data, message: 'success' }),
-    error: message => ({ code: 1, data: null, message })
+    error: message => ({ code: 1, message })
   },
   // 密码加密
   encrypt(password) {
