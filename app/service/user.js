@@ -4,10 +4,10 @@ const xss = require('xss')
 
 class UserService extends Service {
   async login(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
       const { account, password, type = '0' } = req
 
       if (!account || !password) return helper.response.error('用户名或者密码不能为空')
@@ -38,10 +38,10 @@ class UserService extends Service {
   }
 
   async register(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
       const { account, password, rePassword } = req
 
       if (!account || !password) return helper.response.error('用户名或者密码不能为空')
@@ -76,10 +76,10 @@ class UserService extends Service {
   }
 
   async getUserInfo(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
       const result = await mysql.select('user_info', {
         where: { id: req.uid },
         columns: ['id', 'account', 'nickname', 'sex', 'avatar', 'status', 'type', 'token']
@@ -93,10 +93,10 @@ class UserService extends Service {
   }
 
   async addSeller(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
       const { account, password, uid } = req
 
       const adminInfo = await mysql.get('user_info', { id: uid, type: '2' })
@@ -127,10 +127,10 @@ class UserService extends Service {
   }
 
   async freezeOrThawUser(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
       const { account, uid } = req
 
       const adminInfo = await mysql.get('user_info', { id: uid, type: '2' })
@@ -153,10 +153,10 @@ class UserService extends Service {
   }
 
   async getUserList(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
       const { uid, pageNo = 1, pageSize = 10, account = '' } = req
 
       const adminInfo = await mysql.get('user_info', { id: uid, type: '2' })
@@ -191,10 +191,10 @@ class UserService extends Service {
   }
 
   async modifyPassword(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
       const { uid, password, newPassword } = req
 
       const cryptoPassword = helper.encrypt(password)
@@ -217,10 +217,10 @@ class UserService extends Service {
   }
 
   async modifyUserInfo(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
       const { uid, nickname, sex = '0' } = req
       const result = await mysql.update('user_info', { id: uid, nickname, sex })
 
@@ -232,10 +232,11 @@ class UserService extends Service {
   }
 
   async uploadAvatar(req) {
-    try {
-      const { helper } = this.ctx
-      const { mysql } = this.app
+    const { helper } = this.ctx
+    const { mysql } = this.app
 
+    try {
+      console.log(req);
     } catch (error) {
       this.logger.error(error)
       return helper.response.error('服务器内部异常')

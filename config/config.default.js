@@ -11,7 +11,15 @@ module.exports = {
   keys: 'IeB4wc&L14JjfB4G$SXcls^dX&eWkWAVkuFfM_Wx&EU1_L9KB_!VwTIX8yWcY5IQfZ$K$FC8',
   // Security 配置
   security: {
-    csrf: false
+    csrf: false,
+    domainWhiteList: ['http://localhost:8080']
+  },
+  // 跨域配置
+  cors: {
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+    allowHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization',
+    credentials: true
   },
   // MySQL 配置
   mysql: {
@@ -30,6 +38,6 @@ module.exports = {
   // 密码加密 key
   salt: '!Btr@WBdFsvUKx7!IQ5sNo6Givpkz@$NS345jHQnaOUYuOqV6*da&6ompDLmvfvn&pYZZMHV',
   // 中间件配置，按顺序执行
-  middleware: ['cors', 'token'],
+  middleware: ['token'],
   ...middlewareConfig
 }

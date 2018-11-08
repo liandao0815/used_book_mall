@@ -74,10 +74,10 @@ class UserController extends Controller {
   /**
    * @description 上传头像。请求参数：avatar
    */
-  async modifyUserInfo() {
+  async uploadAvatar() {
     const { query, request, service } = this.ctx
-    const req = { ...query, ...request.body }
-    this.ctx.body = await service.user.modifyUserInfo(req)
+    const req = { ...query, ...request.body, files: request.files }
+    this.ctx.body = await service.user.uploadAvatar(req)
   }
 }
 
