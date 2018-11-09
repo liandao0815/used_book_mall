@@ -13,5 +13,6 @@ module.exports = app => {
   router.post('/api/user/uploadAvatar', controller.user.uploadAvatar)
 
   //address 路由配置
-  router.post('/api/address/create', controller.address.create)
+  router.post('/api/address/createOrEdit', controller.address.createOrEdit)
+  router.get('/api/address/getAddressInfo', controller.address.getAddressInfo)
 }
