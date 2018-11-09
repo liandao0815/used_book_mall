@@ -9,7 +9,7 @@ class AddressController extends Controller {
     const req = request.body
     this.ctx.body = await service.address.create(req)
   }
-  
+
   /**
    * @description 获取地址信息
    */
