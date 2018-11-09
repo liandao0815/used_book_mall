@@ -11,4 +11,7 @@ module.exports = app => {
   router.post('/api/user/modifyPassword', controller.user.modifyPassword)
   router.post('/api/user/modifyUserInfo', controller.user.modifyUserInfo)
   router.post('/api/user/uploadAvatar', controller.user.uploadAvatar)
+
+  //address 路由配置
+  router.post('/api/address/create', controller.address.create)
 }
