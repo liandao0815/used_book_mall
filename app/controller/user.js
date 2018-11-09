@@ -76,7 +76,7 @@ class UserController extends Controller {
    */
   async uploadAvatar() {
     const { query, request, service } = this.ctx
-    const req = { ...query, ...request.body, files: request.files }
+    const req = { ...query, files: request.files }
     this.ctx.body = await service.user.uploadAvatar(req)
   }
 }

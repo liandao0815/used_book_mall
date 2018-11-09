@@ -1,6 +1,8 @@
 const Service = require('egg').Service
 const jwt = require('jsonwebtoken')
 const xss = require('xss')
+const fs = require('fs')
+const path = require('path')
 
 class UserService extends Service {
   async login(req) {
@@ -33,6 +35,7 @@ class UserService extends Service {
       }
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
@@ -71,6 +74,7 @@ class UserService extends Service {
       }
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
@@ -88,6 +92,7 @@ class UserService extends Service {
       return helper.response.success(result)
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
@@ -122,6 +127,7 @@ class UserService extends Service {
       return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
@@ -148,6 +154,7 @@ class UserService extends Service {
       }
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
@@ -186,6 +193,7 @@ class UserService extends Service {
       }
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
@@ -212,6 +220,7 @@ class UserService extends Service {
       }
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
@@ -227,6 +236,7 @@ class UserService extends Service {
       return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
@@ -236,9 +246,38 @@ class UserService extends Service {
     const { mysql } = this.app
 
     try {
-      console.log(req);
+      // 文件上传格式
+      const FILE_TYPE = ['image/jpeg', 'image/png']
+      // 文件上传大小
+      const FILE_SIZE = 0.5 * 1024 * 1024
+
+      const { uid, files } = req
+      const { mime, filepath } = files[0]
+      const stat = fs.statSync(filepath)
+
+      if (!FILE_TYPE.includes(mime)) {
+        this.ctx.status = 415
+        return helper.response.error('请上传图片格式')
+      }
+
+      if (stat.size > FILE_SIZE) {
+        this.ctx.status = 413
+        return helper.response.error('文件大小超过500K')
+      }
+
+      const writeFilePath = path.resolve(
+        __dirname,
+        `../public/images/user_avatar/${uid}_${Date.now() + path.extname(filepath)}`
+      )
+      const reader = fs.createReadStream(filepath)
+      const writer = fs.createWriteStream(writeFilePath)
+      reader.pipe(writer)
+
+      const result = await mysql.update('user_info', { id: uid, avatar: writeFilePath })
+      return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
     } catch (error) {
       this.logger.error(error)
+      this.ctx.status = 500
       return helper.response.error('服务器内部异常')
     }
   }
