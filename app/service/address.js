@@ -57,7 +57,7 @@ class AddressService extends Service {
         columns: ['id', 'name', 'phone', 'area', 'address']
       })
 
-      return helper.response.success(result)
+      return helper.response.success(result[0])
     } catch (error) {
       this.logger.error(error)
       this.ctx.status = 500
