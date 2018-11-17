@@ -23,8 +23,8 @@ class CategoryController extends Controller {
    * @description 获取分类列表
    */
   async getCategoryList() {
-    const { query, service } = this.ctx
-    this.ctx.body = await service.category.getCategoryList(query)
+    const { service } = this.ctx
+    this.ctx.body = await service.category.getCategoryList()
   }
 }
 

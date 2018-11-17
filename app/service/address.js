@@ -26,11 +26,11 @@ class AddressService extends Service {
       }
 
       if (!id) {
-        const addressInfo = mysql.get('address_info', { user_id: uid })
+        const addressInfo = await mysql.get('address_info', { user_id: uid })
 
         if (addressInfo) return helper.response.error('收获地址已存在')
 
-        const result = mysql.insert('address_info', { user_id: uid, ...commonParams })
+        const result = await mysql.insert('address_info', { user_id: uid, ...commonParams })
 
         return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
       } else {

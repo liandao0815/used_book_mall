@@ -5,8 +5,8 @@ class AddressController extends Controller {
    * @description 添加或者编辑收获地址。请求参数：id（修改时传）, name, phone, area, address
    */
   async createOrEdit() {
-    const { request, service } = this.ctx
-    const req = request.body
+    const { query, request, service } = this.ctx
+    const req = {...query, ...request.body}
     this.ctx.body = await service.address.createOrEdit(req)
   }
 
