@@ -7,7 +7,7 @@ class AddressController extends Controller {
   async createOrEdit() {
     const { request, service } = this.ctx
     const req = request.body
-    this.ctx.body = await service.address.create(req)
+    this.ctx.body = await service.address.createOrEdit(req)
   }
 
   /**

@@ -25,7 +25,7 @@ class AddressService extends Service {
         address: xss(address)
       }
 
-      if (id) {
+      if (!id) {
         const addressInfo = mysql.get('address_info', { user_id: uid })
 
         if (addressInfo) return helper.response.error('收获地址已存在')

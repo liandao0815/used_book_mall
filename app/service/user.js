@@ -211,7 +211,7 @@ class UserService extends Service {
 
       if (!userInfo) {
         return helper.response.error('原密码不正确')
-      } else if (newPassword) {
+      } else if (!newPassword) {
         return helper.response.error('新密码不能为空')
       } else {
         const cryptoNewPassword = helper.encrypt(newPassword)

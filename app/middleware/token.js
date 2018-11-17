@@ -30,6 +30,7 @@ module.exports = (options, app) => async (ctx, next) => {
       jwt.verify(token, options.keys)
     } catch (error) {
       app.logger.error(error)
+      ctx.status = 401
       ctx.body = ctx.helper.response.error('token失效，请登录后再试')
       return
     }
