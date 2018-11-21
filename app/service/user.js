@@ -266,15 +266,17 @@ class UserService extends Service {
         return helper.response.error('文件大小超过500K')
       }
 
-      const writeFilePath = path.resolve(
-        __dirname,
-        `../public/images/user_avatar/${uid}_${Date.now() + path.extname(filepath)}`
-      )
+      const commonImgPath = `/public/images/user_avatar/${uid}_${Date.now() + path.extname(filepath)}`
+
+      const writeFilePath = path.join(__dirname, '../', commonImgPath)
       const reader = fs.createReadStream(filepath)
       const writer = fs.createWriteStream(writeFilePath)
       reader.pipe(writer)
 
-      const result = await mysql.update('user_info', { id: uid, avatar: writeFilePath })
+      const { protocol, host, port } = this.config
+      const databaseImgPath = `${protocol}://${host}:${port}${commonImgPath}`
+
+      const result = await mysql.update('user_info', { id: uid, avatar: databaseImgPath })
       return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
     } catch (error) {
       this.logger.error(error)

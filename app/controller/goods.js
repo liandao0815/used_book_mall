@@ -7,7 +7,7 @@ class GoodsController extends Controller {
    */
   async addOrEdit() {
     const { query, request, service } = this.ctx
-    const req = { ...query, ...request.body }
+    const req = { ...query, ...request.body, files: request.files }
     this.ctx.body = await service.goods.addOrEdit(req)
   }
 

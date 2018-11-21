@@ -20,4 +20,10 @@ module.exports = app => {
   router.post('/api/category/createOrEdit', controller.category.createOrEdit)
   router.post('/api/category/delete', controller.category.delete)
   router.get('/api/category/getCategoryList', controller.category.getCategoryList)
+
+  // goods 路由配置
+  router.post('/api/goods/addOrEdit', controller.goods.addOrEdit)
+  router.post('/api/goods/changeStatus', controller.goods.changeStatus)
+  router.get('/api/goods/getGoodsDetail', controller.goods.getGoodsDetail)
+  router.get('/api/goods/getGoodsList', controller.goods.getGoodsList)
 }
