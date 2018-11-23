@@ -28,13 +28,13 @@ module.exports = {
         regexp: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
         message: '手机号格式不正确'
       },
-      email: {
-        regexp: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
-        message: '邮箱格式不正确'
-      },
       number: {
         regexp: /^\d+(\.\d+)?$/,
         message: '数字格式不正确'
+      },
+      posInteger: {
+        regexp: /^\d+$/,
+        message: '正整数格式不正确'
       }
     }
 

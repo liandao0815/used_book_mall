@@ -247,9 +247,7 @@ class UserService extends Service {
     const { mysql } = this.app
 
     try {
-      // 文件上传格式
       const FILE_TYPE = ['image/jpeg', 'image/png']
-      // 文件上传大小
       const FILE_SIZE = 0.5 * 1024 * 1024
 
       const { uid, files } = req
