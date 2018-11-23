@@ -182,9 +182,10 @@ class GoodsService extends Service {
     try {
       const value = req.value
 
-      const idCondition = isNaN(Number(value)) ? '' : `id = ${value} OR `
+      if (!value) return helper.response.error('搜索关键词不能为空')
 
-      const condition = value ? `WHERE ${idCondition} name LIKE '%${value}%'` : ''
+      const idCondition = isNaN(Number(value)) ? '' : `id = ${value} OR `
+      const condition = `WHERE ${idCondition} name LIKE '%${value}%'`
       const result = await mysql.query(`SELECT * FROM goods_info ${condition}`)
 
       return helper.response.success(result)
