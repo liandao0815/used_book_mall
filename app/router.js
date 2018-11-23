@@ -26,4 +26,5 @@ module.exports = app => {
   router.post('/api/goods/changeStatus', controller.goods.changeStatus)
   router.get('/api/goods/getGoodsDetail', controller.goods.getGoodsDetail)
   router.get('/api/goods/getGoodsList', controller.goods.getGoodsList)
+  router.get('/api/goods/searchGoods', controller.goods.searchGoods)
 }

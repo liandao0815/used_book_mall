@@ -103,6 +103,23 @@ class GoodsService extends Service {
     const { mysql } = this.app
 
     try {
+      const { uid, id, status } = req
+
+      const userInfo = await mysql.get('user_info', { id: uid })
+      if (userInfo.type === '0') {
+        this.ctx.status = 403
+        return helper.response.error('非法操作')
+      }
+
+      const validateMessage = helper.validateForm([
+        { value: id, name: '商品ID', required: true },
+        { value: status, name: '商品状态', required: true }
+      ])
+
+      if (validateMessage) return helper.response.error(validateMessage)
+
+      const result = await mysql.update('goods_info', { id, status })
+      return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
     } catch (error) {
       this.logger.error(error)
       this.ctx.status = 500
@@ -115,6 +132,9 @@ class GoodsService extends Service {
     const { mysql } = this.app
 
     try {
+      const result = await mysql.get('goods_info', { id: req.id })
+
+      return helper.response.success(result)
     } catch (error) {
       this.logger.error(error)
       this.ctx.status = 500
@@ -127,6 +147,47 @@ class GoodsService extends Service {
     const { mysql } = this.app
 
     try {
+      const { id, name, type, category_id, pageNo = 1, pageSize = 10 } = req
+      const conditionArray = []
+      let condition
+
+      id && conditionArray.push(`id = ${id}`)
+      name && conditionArray.push(`name LIKE '%${name}%'`)
+      type && conditionArray.push(`type = ${type}`)
+      category_id && conditionArray.push(`category_id = ${category_id}`)
+
+      if (!conditionArray.length) condition = ''
+      else condition = `WHERE ${conditionArray.join(' AND ')}`
+
+      // 分页数据
+      const result = await mysql.query(
+        `SELECT * FROM goods_info ${condition} ORDER BY id DESC 
+        LIMIT ${(pageNo - 1) * pageSize}, ${pageSize}`
+      )
+      // 数据总数
+      const totalCount = await mysql.query(`SELECT COUNT(*) AS count FROM goods_info ${condition}`)
+
+      return helper.response.success({ result, totalCount: totalCount[0].count })
+    } catch (error) {
+      this.logger.error(error)
+      this.ctx.status = 500
+      return helper.response.error('服务器内部异常')
+    }
+  }
+
+  async searchGoods(req) {
+    const { helper } = this.ctx
+    const { mysql } = this.app
+
+    try {
+      const value = req.value
+
+      const idCondition = isNaN(Number(value)) ? '' : `id = ${value} OR `
+
+      const condition = value ? `WHERE ${idCondition} name LIKE '%${value}%'` : ''
+      const result = await mysql.query(`SELECT * FROM goods_info ${condition}`)
+
+      return helper.response.success(result)
     } catch (error) {
       this.logger.error(error)
       this.ctx.status = 500

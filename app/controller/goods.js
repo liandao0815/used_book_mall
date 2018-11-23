@@ -12,7 +12,7 @@ class GoodsController extends Controller {
   }
 
   /**
-   * @description 上架或者下架商品。请求参数：id
+   * @description 上架或者下架商品。请求参数：id, status
    */
   async changeStatus() {
     const { query, request, service } = this.ctx
@@ -34,6 +34,14 @@ class GoodsController extends Controller {
   async getGoodsList() {
     const { query, service } = this.ctx
     this.ctx.body = await service.goods.getGoodsList(query)
+  }
+
+  /**
+   * @description 搜索商品。请求参数：id, value
+   */
+  async searchGoods() {
+    const { query, service } = this.ctx
+    this.ctx.body = await service.goods.searchGoods(query)
   }
 }
 
