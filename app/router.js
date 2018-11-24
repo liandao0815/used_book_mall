@@ -36,9 +36,9 @@ module.exports = app => {
   router.get('/api/banner/getBannnerDetail', controller.banner.getBannnerDetail)
 
   // cart 路由配置
-  // router.post('/api/cart/createOrEdit', controller.cart.createOrEdit)
-  // router.post('/api/cart/delete', controller.cart.delete)
-  // router.get('/api/cart/getUserCart', controller.cart.getUserCart)
+  router.post('/api/cart/createOrEdit', controller.cart.createOrEdit)
+  router.post('/api/cart/delete', controller.cart.delete)
+  router.get('/api/cart/getUserCart', controller.cart.getUserCart)
 
   // order 路由配置
   // router.post('/api/order/create', controller.order.create)
