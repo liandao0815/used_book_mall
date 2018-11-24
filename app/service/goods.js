@@ -149,13 +149,14 @@ class GoodsService extends Service {
     const { mysql } = this.app
 
     try {
-      const { id, name, type, category_id, pageNo = 1, pageSize = 10 } = req
+      const { id, name, type, status, category_id, pageNo = 1, pageSize = 10 } = req
       const conditionArray = []
       let condition
 
       id && conditionArray.push(`id = ${id}`)
       name && conditionArray.push(`name LIKE '%${name}%'`)
       type && conditionArray.push(`type = ${type}`)
+      status && conditionArray.push(`status = ${status}`)
       category_id && conditionArray.push(`category_id = ${category_id}`)
 
       if (!conditionArray.length) condition = ''

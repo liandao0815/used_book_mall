@@ -44,10 +44,12 @@ module.exports = app => {
   // router.post('/api/order/create', controller.order.create)
   // router.post('/api/order/delete', controller.order.delete)
   // router.get('/api/order/getUserOrder', controller.order.getUserOrder)
+  // router.get('/api/order/getOrderDetail', controller.order.getOrderDetail)
   // router.get('/api/order/getAllOrder', controller.order.getAllOrder)
 
   // asssess 路由配置
   // router.post('/api/asssess/create', controller.asssess.create)
+  // router.get('/api/assess/checkStatus', controller.asssess.checkStatus)
   // router.post('/api/asssess/delete', controller.asssess.delete)
   // router.get('/api/asssess/getUserAsssess', controller.asssess.getUserAsssess)
   // router.get('/api/asssess/getAllAsssess', controller.asssess.getAllAsssess)

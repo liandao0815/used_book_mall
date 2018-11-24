@@ -29,7 +29,7 @@ class GoodsController extends Controller {
   }
 
   /**
-   * @description 获取商品列表。请求参数：id, name, type, category_id, pageNo, pageSize
+   * @description 获取商品列表。请求参数：id, name, type, status, category_id, pageNo, pageSize
    */
   async getGoodsList() {
     const { query, service } = this.ctx
