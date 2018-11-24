@@ -251,6 +251,9 @@ class UserService extends Service {
       const FILE_SIZE = 0.5 * 1024 * 1024
 
       const { uid, files } = req
+
+      if (!files) return helper.response.error('用户头像不能为空')
+
       const { mime, filepath } = files[0]
       const stat = fs.statSync(filepath)
 

@@ -45,6 +45,8 @@ class CategoryService extends Service {
     try {
       const { uid, id } = req
 
+      if (!id) return helper.response.error('分类id不能为空')
+
       const userInfo = await mysql.get('user_info', { id: uid })
 
       if (userInfo.type === '0') {
@@ -70,6 +72,23 @@ class CategoryService extends Service {
       const result = await mysql.select('category_info', {
         columns: ['id', 'name', 'create_time', 'update_time']
       })
+
+      return helper.response.success(result)
+    } catch (error) {
+      this.logger.error(error)
+      this.ctx.status = 500
+      return helper.response.error('服务器内部异常')
+    }
+  }
+
+  async getCategoryDetail(req) {
+    const { helper } = this.ctx
+    const { mysql } = this.app
+
+    try {
+      if (!req.id) return helper.response.error('分类id不能为空')
+
+      const result = await mysql.get('category_info', { id: req.id })
 
       return helper.response.success(result)
     } catch (error) {

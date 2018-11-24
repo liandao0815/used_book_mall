@@ -26,6 +26,14 @@ class CategoryController extends Controller {
     const { service } = this.ctx
     this.ctx.body = await service.category.getCategoryList()
   }
+
+  /**
+   * @description 获取分类详情。请求参数：id
+   */
+  async getCategoryDetail() {
+    const { query, service } = this.ctx
+    this.ctx.body = await service.category.getCategoryDetail(query)
+  }
 }
 
 module.exports = CategoryController

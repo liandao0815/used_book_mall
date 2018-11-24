@@ -132,6 +132,8 @@ class GoodsService extends Service {
     const { mysql } = this.app
 
     try {
+      if (!req.id) return helper.response.error('商品id不能为空')
+
       const result = await mysql.get('goods_info', { id: req.id })
 
       return helper.response.success(result)
