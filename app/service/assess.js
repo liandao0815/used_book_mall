@@ -98,10 +98,12 @@ class AssessService extends Service {
 
       if (!goods_id) return helper.response.error('商品ID不能为空')
 
-      const assessList = await mysql.select('assess_info', {
-        where: { goods_id },
-        orders: [['create_time', 'desc']]
-      })
+      const assessListSql = `SELECT a.id, a.content, a.score, a.rank, a.priority, a.create_time,
+       u.account, u.avatar FROM assess_info AS a 
+       INNER JOIN user_info AS u ON a.user_id = u.id 
+       WHERE a.goods_id = ${goods_id} ORDER BY a.create_time DESC`
+      const assessList = await mysql.query(assessListSql)
+
       const rankData = await mysql.query(
         `SELECT COUNT(rank) AS count, rank FROM assess_info 
         WHERE goods_id = ${goods_id} GROUP BY assess_info.rank`
