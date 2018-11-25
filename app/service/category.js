@@ -27,6 +27,11 @@ class CategoryService extends Service {
         return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
       } else {
         const options = { where: { id } }
+
+        const categoryInfo = await mysql.get('category_info', { name })
+        
+        if (categoryInfo) return helper.response.error('该分类名称已存在')
+
         const result = await mysql.update('category_info', { name }, options)
 
         return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
