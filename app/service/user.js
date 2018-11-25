@@ -178,7 +178,7 @@ class UserService extends Service {
 
         // 分页数据
         const result = await mysql.query(
-          `SELECT id, account, nickname, sex, status, type create_time, update_time
+          `SELECT id, account, nickname, sex, status, type, create_time, update_time
           FROM user_info 
           WHERE ${condition}
           ORDER BY id DESC 

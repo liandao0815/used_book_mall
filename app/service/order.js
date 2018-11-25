@@ -89,7 +89,7 @@ class OrderService extends Service {
     const { mysql } = this.app
 
     try {
-      const sql = `SELECT o.id, o.money, o.amount, o.${'`create_time`'} AS createTime, g.name, g.icon
+      const sql = `SELECT o.id, o.money, o.amount, o.create_time, g.name, g.icon
         FROM goods_info AS g INNER JOIN order_info AS o ON o.goods_id = g.id 
         WHERE o.user_id = ${req.uid}`
 
@@ -119,10 +119,10 @@ class OrderService extends Service {
 
       const condition = id ? `WHERE id = ${id}` : ''
 
-      const querySql = `SELECT o.id, o.money, o.${'`create_time`'} AS createTime, g.id AS gid, u.account
+      const querySql = `SELECT o.id, o.money, o.create_time, g.id AS goods_id, u.account
         FROM order_info AS o INNER JOIN goods_info AS g ON o.goods_id = g.id 
         INNER JOIN user_info AS u ON o.user_id = u.id ${condition}
-        ORDER BY id DESC 
+        ORDER BY id DESC
         LIMIT ${(pageNo - 1) * pageSize}, ${pageSize}`
       const totalSql = `SELECT COUNT(*) AS count FROM order_info ${condition}`
 

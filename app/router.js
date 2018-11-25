@@ -48,10 +48,10 @@ module.exports = app => {
   router.get('/api/order/getOrderDetail', controller.order.getOrderDetail)
 
   // asssess 路由配置
-  // router.post('/api/asssess/create', controller.asssess.create)
-  // router.get('/api/assess/checkStatus', controller.asssess.checkStatus)
-  // router.post('/api/asssess/delete', controller.asssess.delete)
-  // router.get('/api/asssess/getGoodsAsssess', controller.asssess.getGoodsAsssess)
-  // router.get('/api/asssess/getAllAsssess', controller.asssess.getAllAsssess)
-  // router.post('/api/asssess/changePriority', controller.asssess.changePriority)
+  router.post('/api/assess/create', controller.assess.create)
+  router.get('/api/assess/checkStatus', controller.assess.checkStatus)
+  router.post('/api/assess/delete', controller.assess.delete)
+  router.get('/api/assess/getGoodsAssess', controller.assess.getGoodsAssess)
+  router.get('/api/assess/getAssessList', controller.assess.getAssessList)
+  router.post('/api/assess/changePriority', controller.assess.changePriority)
 }

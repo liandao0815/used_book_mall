@@ -28,7 +28,7 @@ class OrderController extends Controller {
   }
 
   /**
-   * @description 分页获取所有订单。id, pageNo, pageSize
+   * @description 分页获取订单。id, pageNo, pageSize
    */
   async getOrderList() {
     const { query, service } = this.ctx

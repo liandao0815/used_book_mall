@@ -54,7 +54,7 @@ class CartService extends Service {
 
     try {
       const result = await mysql.query(
-        `SELECT c.id, c.amount, g.id AS gid, g.name, g.price, g.icon 
+        `SELECT c.id, c.amount, g.id AS goods_id, g.name, g.price, g.icon 
         FROM goods_info AS g INNER JOIN cart_info AS c ON c.goods_id = g.id 
         WHERE c.user_id = ${req.uid}`
       )

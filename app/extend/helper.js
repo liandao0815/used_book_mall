@@ -35,6 +35,10 @@ module.exports = {
       posInteger: {
         regexp: /^[1-9]\d*$/,
         message: '正整数格式不正确'
+      },
+      score: {
+        regexp: /(^[0-9]|10)$/,
+        message: '分数格式不正确'
       }
     }
 
@@ -54,7 +58,7 @@ module.exports = {
     }
 
     for (const object of options) {
-      const { name, value, required, type, minLength, maxLength } = object
+      const { name, value = '', required, type, minLength, maxLength } = object
 
       const requiredMsg = required && strategy.required(name, value)
       const typeMsg = type && strategy.type(value, type)
