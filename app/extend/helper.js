@@ -33,7 +33,7 @@ module.exports = {
         message: '数字格式不正确'
       },
       posInteger: {
-        regexp: /^\d+$/,
+        regexp: /^[1-9]\d*$/,
         message: '正整数格式不正确'
       }
     }
@@ -67,5 +67,20 @@ module.exports = {
         if (msg) return msg
       }
     }
+  },
+  // 生成订单号
+  createOrderNo(uid) {
+    const date = new Date()
+
+    const orderNoPrefix =
+      date.getFullYear().toString() +
+      (date.getMonth() + 1) +
+      date.getDate() +
+      date.getHours() +
+      date.getMinutes() +
+      date.getSeconds() +
+      date.getMilliseconds()
+
+    return orderNoPrefix + uid + (Math.random() * 1e5).toString().slice(0, 4)
   }
 }

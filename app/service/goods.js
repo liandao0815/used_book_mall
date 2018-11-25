@@ -119,6 +119,7 @@ class GoodsService extends Service {
       if (validateMessage) return helper.response.error(validateMessage)
 
       const result = await mysql.update('goods_info', { id, status })
+
       return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
     } catch (error) {
       this.logger.error(error)

@@ -28,7 +28,7 @@ class AddressService extends Service {
       if (!id) {
         const addressInfo = await mysql.get('address_info', { user_id: uid })
 
-        if (addressInfo) return helper.response.error('收获地址已存在')
+        if (addressInfo) return helper.response.error('收货地址已存在')
 
         const result = await mysql.insert('address_info', { user_id: uid, ...commonParams })
 

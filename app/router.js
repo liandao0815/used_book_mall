@@ -32,7 +32,7 @@ module.exports = app => {
   // banner 路由配置
   router.post('/api/banner/createOrEdit', controller.banner.createOrEdit)
   router.post('/api/banner/delete', controller.banner.delete)
-  router.get('/api/banner/getBannners', controller.banner.getBannners)
+  router.get('/api/banner/getBannnerList', controller.banner.getBannnerList)
   router.get('/api/banner/getBannnerDetail', controller.banner.getBannnerDetail)
 
   // cart 路由配置
@@ -41,17 +41,17 @@ module.exports = app => {
   router.get('/api/cart/getUserCart', controller.cart.getUserCart)
 
   // order 路由配置
-  // router.post('/api/order/create', controller.order.create)
-  // router.post('/api/order/delete', controller.order.delete)
-  // router.get('/api/order/getUserOrder', controller.order.getUserOrder)
-  // router.get('/api/order/getOrderDetail', controller.order.getOrderDetail)
-  // router.get('/api/order/getAllOrder', controller.order.getAllOrder)
+  router.post('/api/order/create', controller.order.create)
+  router.post('/api/order/delete', controller.order.delete)
+  router.get('/api/order/getUserOrder', controller.order.getUserOrder)
+  router.get('/api/order/getOrderList', controller.order.getOrderList)
+  router.get('/api/order/getOrderDetail', controller.order.getOrderDetail)
 
   // asssess 路由配置
   // router.post('/api/asssess/create', controller.asssess.create)
   // router.get('/api/assess/checkStatus', controller.asssess.checkStatus)
   // router.post('/api/asssess/delete', controller.asssess.delete)
-  // router.get('/api/asssess/getUserAsssess', controller.asssess.getUserAsssess)
+  // router.get('/api/asssess/getGoodsAsssess', controller.asssess.getGoodsAsssess)
   // router.get('/api/asssess/getAllAsssess', controller.asssess.getAllAsssess)
   // router.post('/api/asssess/changePriority', controller.asssess.changePriority)
 }

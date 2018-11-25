@@ -2,7 +2,7 @@ const Controller = require('egg').Controller
 
 class AddressController extends Controller {
   /**
-   * @description 添加或者编辑收获地址。请求参数：id（修改时传）, name, phone, area, address
+   * @description 添加或者编辑收货地址。请求参数：id（修改时传）, name, phone, area, address
    */
   async createOrEdit() {
     const { query, request, service } = this.ctx

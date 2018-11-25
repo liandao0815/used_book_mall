@@ -22,9 +22,9 @@ class BannerController extends Controller {
   /**
    * @description 获取公告图列表。请求参数：number
    */
-  async getBannners() {
+  async getBannnerList() {
     const { query, service } = this.ctx
-    this.ctx.body = await service.banner.getBannners(query)
+    this.ctx.body = await service.banner.getBannnerList(query)
   }
 
   /**
