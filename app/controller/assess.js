@@ -36,7 +36,7 @@ class AssessController extends Controller {
   }
 
   /**
-   * @description 分页获取商品评价列表。请求参数：id, goods_id, account, pageNo, pageSize
+   * @description 分页获取商品评价列表。请求参数：goods_id, account, pageNo, pageSize
    */
   async getAssessList() {
     const { query, service } = this.ctx

@@ -94,6 +94,36 @@ class AssessService extends Service {
     const { mysql } = this.app
 
     try {
+      const { goods_id } = req
+
+      if (!goods_id) return helper.response.error('商品ID不能为空')
+
+      const assessList = await mysql.select('assess_info', {
+        where: { goods_id },
+        orders: [['create_time', 'desc']]
+      })
+      const rankData = await mysql.query(
+        `SELECT COUNT(rank) AS count, rank FROM assess_info 
+        WHERE goods_id = ${goods_id} GROUP BY assess_info.rank`
+      )
+      const averageScore = await mysql.query(
+        `SELECT AVG(score) AS average FROM assess_info WHERE goods_id = ${goods_id}`
+      )
+
+      const assessLength = assessList.length
+      const rankPercent = rankData.map(data => ({
+        rank: data.rank,
+        percent: (Number.parseInt(data.count) / assessLength).toFixed(2)
+      }))
+
+      const result = {
+        rankPercent,
+        assessList,
+        length: assessLength,
+        average: averageScore[0].average
+      }
+
+      return helper.response.success(result)
     } catch (error) {
       this.logger.error(error)
       this.ctx.status = 500
@@ -106,6 +136,37 @@ class AssessService extends Service {
     const { mysql } = this.app
 
     try {
+      const { uid, goods_id, account, pageNo = 1, pageSize = 10 } = req
+
+      const adminIofo = await mysql.get('user_info', { id: uid, type: '2' })
+
+      if (!adminIofo) {
+        this.ctx.status = 403
+        return helper.response.error('非法操作')
+      } else {
+        const conditionArray = []
+        let condition
+
+        goods_id && conditionArray.push(`a.goods_id = ${goods_id}`)
+        account && conditionArray.push(`u.account LIKE '%${account}%'`)
+
+        if (!conditionArray.length) condition = ''
+        else condition = `WHERE ${conditionArray.join(' AND ')}`
+
+        const resultSql = `SELECT a.goods_id, a.user_id, a.priority, a.create_time, u.account
+          FROM assess_info AS a
+          INNER JOIN user_info AS u ON u.id = a.user_id
+          ${condition}
+          ORDER BY a.id DESC 
+          LIMIT ${(pageNo - 1) * pageSize}, ${pageSize}`
+        const totalCountSql = `SELECT COUNT(*) AS count FROM assess_info AS a 
+          INNER JOIN user_info AS u ${condition}`
+
+        const result = await mysql.query(resultSql)
+        const totalCount = await mysql.query(totalCountSql)
+
+        return helper.response.success({ result, totalCount: totalCount[0].count })
+      }
     } catch (error) {
       this.logger.error(error)
       this.ctx.status = 500
