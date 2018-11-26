@@ -24,7 +24,10 @@ class BannerService extends Service {
 
       if (validateMessage) return helper.response.error(validateMessage)
 
-      if (!files) return helper.response.error('公告图不能为空')
+      if (!files.length) return helper.response.error('公告图不能为空')
+
+      const goodsInfo = await mysql.get('goods_info', { id: goods_id })
+      if (!goodsInfo) return helper.response.error('商品ID不存在')
 
       const FILE_TYPE = ['image/jpeg', 'image/png']
       const { mime, filepath } = files[0]
