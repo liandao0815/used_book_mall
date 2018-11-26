@@ -32,8 +32,8 @@ module.exports = app => {
   // banner 路由配置
   router.post('/api/banner/createOrEdit', controller.banner.createOrEdit)
   router.post('/api/banner/delete', controller.banner.delete)
-  router.get('/api/banner/getBannnerList', controller.banner.getBannnerList)
-  router.get('/api/banner/getBannnerDetail', controller.banner.getBannnerDetail)
+  router.get('/api/banner/getBannerList', controller.banner.getBannerList)
+  router.get('/api/banner/getBannerDetail', controller.banner.getBannerDetail)
 
   // cart 路由配置
   router.post('/api/cart/createOrEdit', controller.cart.createOrEdit)

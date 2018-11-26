@@ -87,7 +87,7 @@ class BannerService extends Service {
     }
   }
 
-  async getBannnerList(req) {
+  async getBannerList(req) {
     const { helper } = this.ctx
     const { mysql } = this.app
 
@@ -106,7 +106,7 @@ class BannerService extends Service {
     }
   }
 
-  async getBannnerDetail(req) {
+  async getBannerDetail(req) {
     const { helper } = this.ctx
     const { mysql } = this.app
 
