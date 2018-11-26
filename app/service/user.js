@@ -121,6 +121,7 @@ class UserService extends Service {
 
       const result = await mysql.insert('user_info', {
         account: filterAccount,
+        nickname: filterAccount,
         password: cryptoPassword,
         type: '1'
       })
