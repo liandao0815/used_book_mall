@@ -75,7 +75,8 @@ class CategoryService extends Service {
 
     try {
       const result = await mysql.select('category_info', {
-        columns: ['id', 'name', 'create_time', 'update_time']
+        columns: ['id', 'name', 'create_time', 'update_time'],
+        orders: [['id', 'desc']]
       })
 
       return helper.response.success(result)

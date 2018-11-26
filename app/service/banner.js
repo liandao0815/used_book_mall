@@ -98,8 +98,13 @@ class BannerService extends Service {
       const number = req.number
       let result
 
-      if (number) result = await mysql.select('banner_info', { limit: number, offset: 0 })
-      else result = await mysql.select('banner_info')
+      if (number)
+        result = await mysql.select('banner_info', {
+          orders: [['update_time', 'desc']],
+          limit: number,
+          offset: 0
+        })
+      else result = await mysql.select('banner_info', { orders: [['id', 'desc']] })
 
       return helper.response.success(result)
     } catch (error) {
