@@ -1,7 +1,16 @@
 const jwt = require('jsonwebtoken')
 
 module.exports = (options, app) => async (ctx, next) => {
-  const filterUrlArray = ['/api/user/login', '/api/user/register']
+  const filterUrlArray = [
+    '/api/user/login',
+    '/api/user/register',
+    '/api/category/getCategoryList',
+    '/api/goods/getGoodsDetail',
+    '/api/goods/getGoodsList',
+    '/api/goods/searchGoods',
+    '/api/banner/getBannerList',
+    '/api/assess/getGoodsAssess'
+  ]
 
   if (filterUrlArray.includes(ctx.path)) {
     await next()
