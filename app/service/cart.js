@@ -50,13 +50,12 @@ class CartService extends Service {
   async batchEditAndDelete(req) {
     const { helper } = this.ctx
     const { mysql } = this.app
-    const conn = await mysql.beginTransaction()
 
     try {
       const { uid, editList, deleteList } = req
 
       const editPromise = editList.map(cartItem => {
-        return conn.update(
+        return mysql.update(
           'cart_info',
           { amount: cartItem.amount },
           { where: { user_id: uid, id: cartItem.id } }
@@ -65,28 +64,22 @@ class CartService extends Service {
 
       for await (const result of editPromise) {
         if (result.affectedRows !== 1) {
-          await conn.rollback()
           return helper.response.error('操作失败')
         }
       }
 
       const deletePromise = deleteList.map(cartId => {
-        return conn.delete('cart_info', { id: cartId, user_id: uid })
+        return mysql.delete('cart_info', { id: cartId, user_id: uid })
       })
-      
+
       for await (const result of deletePromise) {
         if (result.affectedRows !== 1) {
-          await conn.rollback()
           return helper.response.error('操作失败')
         }
       }
 
-      await conn.commit()
-
       return helper.response.success()
     } catch (error) {
-      await conn.rollback()
-
       this.logger.error(error)
       this.ctx.status = 500
       return helper.response.error('服务器内部异常')

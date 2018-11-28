@@ -51,7 +51,7 @@ class OrderService extends Service {
         goods_id: goodsInfo.id,
         address_id: addressInfo.id
       })
-      
+
       if (insertResult.affectedRows !== 1) {
         await conn.rollback()
         return helper.response.error('操作失败')
@@ -72,6 +72,7 @@ class OrderService extends Service {
   async batchCreate(req) {
     const { helper } = this.ctx
     const { mysql } = this.app
+    const conn = await mysql.beginTransaction()
 
     try {
       const { uid, cartList } = req
@@ -80,11 +81,13 @@ class OrderService extends Service {
       if (!addressInfo) return helper.response.error('请先设置收货地址')
 
       const cartPromise = cartList.map(item =>
-        this._handleCartItem({ cart_id: item, uid, address_id: addressInfo.id })
+        this._handleCartItem({ cart_id: item, uid, address_id: addressInfo.id }, conn)
       )
       for await (const response of cartPromise) {
         if (response.code === 1) return response
       }
+
+      await conn.commit()
 
       return helper.response.success()
     } catch (error) {
@@ -94,10 +97,8 @@ class OrderService extends Service {
     }
   }
 
-  async _handleCartItem(req) {
+  async _handleCartItem(req, conn) {
     const { helper } = this.ctx
-    const { mysql } = this.app
-    const conn = await mysql.beginTransaction()
 
     try {
       const { uid, cart_id, address_id } = req
@@ -151,8 +152,6 @@ class OrderService extends Service {
           await conn.rollback()
           return helper.response.error('操作失败')
         }
-
-        await conn.commit()
 
         return helper.response.success()
       }
