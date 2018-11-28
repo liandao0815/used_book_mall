@@ -34,7 +34,7 @@ class CartService extends Service {
           result = await mysql.update(
             'cart_info',
             { id: cartInfo.id, amount: cartInfo.amount + Number(amount) },
-            options
+            { where: { id: cartInfo.id, user_id: uid } }
           )
         else result = await mysql.insert('cart_info', { ...row, user_id: uid })
       }
