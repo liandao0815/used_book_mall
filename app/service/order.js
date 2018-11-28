@@ -214,7 +214,7 @@ class OrderService extends Service {
     const { mysql } = this.app
 
     try {
-      const sql = `SELECT o.id, o.money, o.amount, o.create_time, g.name, g.icon
+      const sql = `SELECT o.id, o.money, o.amount, o.create_time, g.id AS goods_id, g.name, g.icon
         FROM goods_info AS g INNER JOIN order_info AS o ON o.goods_id = g.id 
         WHERE o.user_id = ${req.uid}`
 
