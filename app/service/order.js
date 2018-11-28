@@ -68,7 +68,7 @@ class OrderService extends Service {
       if (!addressInfo) return helper.response.error('请先设置收货地址')
 
       const cartPromise = cartList.map(item =>
-        this._handleCartItem({ ...item, uid, address_id: addressInfo.id })
+        this._handleCartItem({ cart_id: item, uid, address_id: addressInfo.id })
       )
       for await (const response of cartPromise) {
         if (response.code === 1) return response
@@ -88,18 +88,13 @@ class OrderService extends Service {
     const conn = await mysql.beginTransaction()
 
     try {
-      const { uid, goods_id, cart_id, amount, address_id } = req
+      const { uid, cart_id, address_id } = req
 
-      const validateMessage = helper.validateForm([
-        { value: goods_id, name: '商品ID', required: true },
-        { value: cart_id, name: '购物车ID', required: true },
-        { value: amount, name: '购买数量', required: true, type: 'posInteger' }
-      ])
-      if (validateMessage) return helper.response.error(validateMessage)
+      const cartInfo = await conn.get('cart_info', { id: cart_id })
+      if (!cartInfo) return helper.response.error(`ID为${cart_id}的购物车不存在`)
 
+      const { goods_id, amount } = cartInfo
       const goodsInfo = await conn.get('goods_info', { id: goods_id })
-      if (!goodsInfo) return helper.response.error(`ID为${goods_id}的商品不存在`)
-
       const surplusStock = goodsInfo.stock - Number.parseInt(amount)
 
       if (goodsInfo.status === '2') {

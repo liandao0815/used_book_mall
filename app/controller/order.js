@@ -11,7 +11,7 @@ class OrderController extends Controller {
   }
 
   /**
-   * @description 批量生成订单。请求参数：cartList: [{goods_id, amount, cart_id}]
+   * @description 批量生成订单。请求参数：cartList: [cart_id]
    */
   async batchCreate() {
     const { query, request, service } = this.ctx

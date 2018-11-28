@@ -15,9 +15,11 @@ class CartService extends Service {
 
       if (validateMessage) return helper.response.error(validateMessage)
 
-      const cartInfo = await mysql.get('cart_info', { goods_id, user_id: uid })
-
       const commonCartData = { user_id: uid, goods_id, amount }
+      const goodsInfo = await mysql.get('goods_info', { id: goods_id })
+
+      if (!goodsInfo) return helper.response.error(`商品ID为${goods_id}的商品不存在`)
+
       let result
 
       if (id) {
@@ -25,14 +27,12 @@ class CartService extends Service {
       } else {
         const cartInfo = await mysql.get('cart_info', { goods_id, user_id: uid })
 
-        if (cartInfo) {
+        if (cartInfo)
           result = await mysql.update('cart_info', {
             id: cartInfo.id,
             amount: cartInfo.amount + Number(amount)
           })
-        } else {
-          result = await mysql.insert('cart_info', commonCartData)
-        }
+        else result = await mysql.insert('cart_info', commonCartData)
       }
 
       return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
