@@ -11,6 +11,15 @@ class CartController extends Controller {
   }
 
   /**
+   * @description 批量编辑。editList: [{id: xx, amount: xxx}], deleteList: [id]
+   */
+  async batchEditAndDelete() {
+    const { query, request, service } = this.ctx
+    const req = { ...query, ...request.body }
+    this.ctx.body = await service.cart.createOrEdit(req)
+  }
+
+  /**
    * @description 删除购物车。请求参数：id
    */
   async delete() {

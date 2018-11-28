@@ -37,6 +37,7 @@ module.exports = app => {
 
   // cart 路由配置
   router.post('/api/cart/createOrEdit', controller.cart.createOrEdit)
+  router.post('/api/cart/batchEditAndDelete', controller.cart.batchEditAndDelete)
   router.post('/api/cart/delete', controller.cart.delete)
   router.get('/api/cart/getUserCart', controller.cart.getUserCart)
 

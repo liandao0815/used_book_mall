@@ -121,7 +121,7 @@ class OrderService extends Service {
           goods_id: goodsInfo.id,
           address_id: address_id
         })
-        await conn.delete('cart_info', { id: cart_id })
+        await conn.delete('cart_info', { id: cart_id, user_id: uid })
         await conn.commit()
 
         return helper.response.success()

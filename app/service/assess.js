@@ -78,7 +78,7 @@ class AssessService extends Service {
         this.ctx.status = 403
         return helper.response.error('非法操作')
       } else {
-        const result = await mysql.delete('assess_info', { id })
+        const result = await mysql.delete('assess_info', { id, user_id: uid })
 
         return result.affectedRows === 1 ? helper.response.success() : helper.response.error('操作失败')
       }
