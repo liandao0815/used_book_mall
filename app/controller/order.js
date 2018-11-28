@@ -11,6 +11,15 @@ class OrderController extends Controller {
   }
 
   /**
+   * @description 批量生成订单。请求参数：cartList: [{goods_id, amount, cart_id}]
+   */
+  async batchCreate() {
+    const { query, request, service } = this.ctx
+    const req = { ...query, ...request.body }
+    this.ctx.body = await service.order.batchCreate(req)
+  }
+
+  /**
    * @description 删除订单。请求参数：id
    */
   async delete() {

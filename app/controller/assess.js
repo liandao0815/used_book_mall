@@ -11,14 +11,6 @@ class AssessController extends Controller {
   }
 
   /**
-   * @description 检查是否可以评价商品。请求参数：goods_id。返回： 0（不能评价），1（能评价）
-   */
-  async checkStatus() {
-    const { query, service } = this.ctx
-    this.ctx.body = await service.assess.checkStatus(query)
-  }
-
-  /**
    * @description 删除评价。请求参数：id
    */
   async delete() {

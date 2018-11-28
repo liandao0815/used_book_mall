@@ -26,7 +26,10 @@ class CartService extends Service {
         const cartInfo = await mysql.get('cart_info', { goods_id, user_id: uid })
 
         if (cartInfo) {
-          result = await mysql.update('cart_info', { id: cartInfo.id, amount: cartInfo.amount + amount })
+          result = await mysql.update('cart_info', {
+            id: cartInfo.id,
+            amount: cartInfo.amount + Number(amount)
+          })
         } else {
           result = await mysql.insert('cart_info', commonCartData)
         }

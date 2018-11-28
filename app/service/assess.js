@@ -17,7 +17,7 @@ class AssessService extends Service {
 
       if (validateMessage) return helper.response.error(validateMessage)
 
-      const checkData = await this.checkStatus({ uid, goods_id })
+      const checkData = await this._checkStatus({ uid, goods_id })
       const assessInfo = await mysql.get('assess_info', { user_id: uid, goods_id })
 
       if (checkData.data === '0') {
@@ -43,7 +43,7 @@ class AssessService extends Service {
     }
   }
 
-  async checkStatus(req) {
+  async _checkStatus(req) {
     const { helper } = this.ctx
     const { mysql } = this.app
 

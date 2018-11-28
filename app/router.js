@@ -42,6 +42,7 @@ module.exports = app => {
 
   // order 路由配置
   router.post('/api/order/create', controller.order.create)
+  router.post('/api/order/batchCreate', controller.order.batchCreate)
   router.post('/api/order/delete', controller.order.delete)
   router.get('/api/order/getUserOrder', controller.order.getUserOrder)
   router.get('/api/order/getOrderList', controller.order.getOrderList)
@@ -49,7 +50,6 @@ module.exports = app => {
 
   // asssess 路由配置
   router.post('/api/assess/create', controller.assess.create)
-  router.get('/api/assess/checkStatus', controller.assess.checkStatus)
   router.post('/api/assess/delete', controller.assess.delete)
   router.get('/api/assess/getGoodsAssess', controller.assess.getGoodsAssess)
   router.get('/api/assess/getAssessList', controller.assess.getAssessList)
