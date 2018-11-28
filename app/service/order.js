@@ -216,7 +216,8 @@ class OrderService extends Service {
     try {
       const sql = `SELECT o.id, o.money, o.amount, o.create_time, g.id AS goods_id, g.name, g.icon
         FROM goods_info AS g INNER JOIN order_info AS o ON o.goods_id = g.id 
-        WHERE o.user_id = ${req.uid}`
+        WHERE o.user_id = ${req.uid}
+        ORDER BY o.create_time DESC`
 
       const result = await mysql.query(sql)
 
@@ -247,7 +248,7 @@ class OrderService extends Service {
       const querySql = `SELECT o.id, o.money, o.create_time, g.id AS goods_id, u.account
         FROM order_info AS o INNER JOIN goods_info AS g ON o.goods_id = g.id 
         INNER JOIN user_info AS u ON o.user_id = u.id ${condition}
-        ORDER BY id DESC
+        ORDER BY o.create_time DESC
         LIMIT ${(pageNo - 1) * pageSize}, ${pageSize}`
       const totalSql = `SELECT COUNT(*) AS count FROM order_info ${condition}`
 
