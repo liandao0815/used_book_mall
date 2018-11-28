@@ -16,15 +16,26 @@ class OrderService extends Service {
       if (validateMessage) return helper.response.error(validateMessage)
 
       const addressInfo = await conn.get('address_info', { user_id: uid })
-      if (!addressInfo) return helper.response.error('请先设置收货地址')
+      if (!addressInfo) {
+        await conn.rollback()
+        return helper.response.error('请先设置收货地址')
+      }
 
       const goodsInfo = await conn.get('goods_info', { id: goods_id })
-      if (!goodsInfo) return helper.response.error('该商品不存在')
+      if (!goodsInfo) {
+        await conn.rollback()
+        return helper.response.error('该商品不存在')
+      }
 
       const surplusStock = goodsInfo.stock - Number.parseInt(amount)
 
-      if (goodsInfo.status === '2') return helper.response.error('该商品已下架')
-      else if (surplusStock < 0) return helper.response.error('购买数量大于库存数量')
+      if (goodsInfo.status === '2') {
+        await conn.rollback()
+        return helper.response.error('该商品已下架')
+      } else if (surplusStock < 0) {
+        await conn.rollback()
+        return helper.response.error('购买数量大于库存数量')
+      }
 
       const status = surplusStock === 0 ? '2' : '1'
       const saleAmount = goodsInfo.sale_amount + Number.parseInt(amount)
@@ -78,7 +89,10 @@ class OrderService extends Service {
       const { uid, cartList } = req
 
       const addressInfo = await mysql.get('address_info', { user_id: uid })
-      if (!addressInfo) return helper.response.error('请先设置收货地址')
+      if (!addressInfo) {
+        await conn.rollback()
+        return helper.response.error('请先设置收货地址')
+      }
 
       const cartPromise = cartList.map(item =>
         this._handleCartItem({ cart_id: item, uid, address_id: addressInfo.id }, conn)
@@ -104,15 +118,20 @@ class OrderService extends Service {
       const { uid, cart_id, address_id } = req
 
       const cartInfo = await conn.get('cart_info', { id: cart_id })
-      if (!cartInfo) return helper.response.error(`ID为${cart_id}的购物车不存在`)
+      if (!cartInfo) {
+        await conn.rollback()
+        return helper.response.error(`ID为${cart_id}的购物车不存在`)
+      }
 
       const { goods_id, amount } = cartInfo
       const goodsInfo = await conn.get('goods_info', { id: goods_id })
       const surplusStock = goodsInfo.stock - Number.parseInt(amount)
 
       if (goodsInfo.status === '2') {
+        await conn.rollback()
         return helper.response.error(`商品${goodsInfo.name}已下架`)
       } else if (surplusStock < 0) {
+        await conn.rollback()
         return helper.response.error(`商品${goodsInfo.name}购买数量大于库存数量`)
       } else {
         const status = surplusStock === 0 ? '2' : '1'
