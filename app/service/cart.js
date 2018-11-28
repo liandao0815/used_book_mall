@@ -62,15 +62,23 @@ class CartService extends Service {
           { where: { user_id: uid, id: cartItem.id } }
         )
       })
+
       for await (const result of editPromise) {
-        if (result.affectedRows !== 1) return helper.response.error('操作失败')
+        if (result.affectedRows !== 1) {
+          await conn.rollback()
+          return helper.response.error('操作失败')
+        }
       }
 
       const deletePromise = deleteList.map(cartId => {
         return conn.delete('cart_info', { id: cartId, user_id: uid })
       })
+      
       for await (const result of deletePromise) {
-        if (result.affectedRows !== 1) return helper.response.error('操作失败')
+        if (result.affectedRows !== 1) {
+          await conn.rollback()
+          return helper.response.error('操作失败')
+        }
       }
 
       await conn.commit()

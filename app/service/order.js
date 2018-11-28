@@ -31,13 +31,19 @@ class OrderService extends Service {
       const money = goodsInfo.price * Number.parseInt(amount)
       const orderId = helper.createOrderNo(uid)
 
-      await conn.update('goods_info', {
+      const updateResult = await conn.update('goods_info', {
         id: goods_id,
         stock: surplusStock,
         status,
         sale_amount: saleAmount
       })
-      await conn.insert('order_info', {
+
+      if (updateResult.affectedRows !== 1) {
+        await conn.rollback()
+        return helper.response.error('操作失败')
+      }
+
+      const insertResult = await conn.insert('order_info', {
         id: orderId,
         money,
         amount,
@@ -45,6 +51,12 @@ class OrderService extends Service {
         goods_id: goodsInfo.id,
         address_id: addressInfo.id
       })
+      
+      if (insertResult.affectedRows !== 1) {
+        await conn.rollback()
+        return helper.response.error('操作失败')
+      }
+
       await conn.commit()
 
       return helper.response.success()
@@ -107,13 +119,19 @@ class OrderService extends Service {
         const money = goodsInfo.price * Number.parseInt(amount)
         const orderId = helper.createOrderNo(uid)
 
-        await conn.update('goods_info', {
+        const updateResult = await conn.update('goods_info', {
           id: goods_id,
           stock: surplusStock,
           status,
           sale_amount: saleAmount
         })
-        await conn.insert('order_info', {
+
+        if (updateResult.affectedRows !== 1) {
+          await conn.rollback()
+          return helper.response.error('操作失败')
+        }
+
+        const insertResult = await conn.insert('order_info', {
           id: orderId,
           money,
           amount,
@@ -121,7 +139,19 @@ class OrderService extends Service {
           goods_id: goodsInfo.id,
           address_id: address_id
         })
-        await conn.delete('cart_info', { id: cart_id, user_id: uid })
+
+        if (insertResult.affectedRows !== 1) {
+          await conn.rollback()
+          return helper.response.error('操作失败')
+        }
+
+        const deleteResult = await conn.delete('cart_info', { id: cart_id, user_id: uid })
+
+        if (deleteResult.affectedRows !== 1) {
+          await conn.rollback()
+          return helper.response.error('操作失败')
+        }
+
         await conn.commit()
 
         return helper.response.success()
