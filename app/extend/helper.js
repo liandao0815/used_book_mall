@@ -37,7 +37,7 @@ module.exports = {
         message: '正整数格式不正确'
       },
       score: {
-        regexp: /(^[0-9]|10)$/,
+        regexp: /^([0-4](\.[05])?|(5(\.0)?))$/,
         message: '分数格式不正确'
       }
     }
