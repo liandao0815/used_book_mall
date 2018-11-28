@@ -16,7 +16,7 @@ class CartController extends Controller {
   async batchEditAndDelete() {
     const { query, request, service } = this.ctx
     const req = { ...query, ...request.body }
-    this.ctx.body = await service.cart.createOrEdit(req)
+    this.ctx.body = await service.cart.batchEditAndDelete(req)
   }
 
   /**
