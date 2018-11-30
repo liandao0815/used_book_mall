@@ -105,8 +105,8 @@ class AssessService extends Service {
       const assessList = await mysql.query(assessListSql)
 
       const rankData = await mysql.query(
-        `SELECT COUNT(rank) AS count, rank FROM assess_info 
-        WHERE goods_id = ${goods_id} GROUP BY assess_info.rank`
+        `SELECT COUNT(a.rank) AS count, a.rank FROM assess_info AS a
+        WHERE a.goods_id = ${goods_id} GROUP BY a.rank`
       )
       const averageScore = await mysql.query(
         `SELECT AVG(score) AS average FROM assess_info WHERE goods_id = ${goods_id}`
@@ -155,14 +155,14 @@ class AssessService extends Service {
         if (!conditionArray.length) condition = ''
         else condition = `WHERE ${conditionArray.join(' AND ')}`
 
-        const resultSql = `SELECT a.goods_id, a.user_id, a.priority, a.create_time, u.account
+        const resultSql = `SELECT a.id, a.goods_id, a.user_id, a.priority, a.create_time, u.account
           FROM assess_info AS a
           INNER JOIN user_info AS u ON u.id = a.user_id
           ${condition}
           ORDER BY a.id DESC 
           LIMIT ${(pageNo - 1) * pageSize}, ${pageSize}`
         const totalCountSql = `SELECT COUNT(*) AS count FROM assess_info AS a 
-          INNER JOIN user_info AS u ${condition}`
+          INNER JOIN user_info AS u ON u.id = a.user_id ${condition}`
 
         const result = await mysql.query(resultSql)
         const totalCount = await mysql.query(totalCountSql)
