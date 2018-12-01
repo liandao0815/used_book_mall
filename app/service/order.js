@@ -248,7 +248,7 @@ class OrderService extends Service {
         INNER JOIN user_info AS u ON o.user_id = u.id ${id ? `WHERE o.id = ${id}` : ''}
         ORDER BY o.create_time DESC
         LIMIT ${(pageNo - 1) * pageSize}, ${pageSize}`
-      const totalSql = `SELECT COUNT(*) AS count FROM order_info ${id ? `WHERE o.id = ${id}` : ''}`
+      const totalSql = `SELECT COUNT(*) AS count FROM order_info ${id ? `WHERE id = ${id}` : ''}`
 
       const result = await mysql.query(querySql)
       const totalCount = await mysql.query(totalSql)
